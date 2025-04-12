@@ -82,7 +82,6 @@ const Feature = ({ title, description, icon, index }) => {
         className={cn(
           'pointer-events-none absolute inset-0 h-full w-full opacity-0 transition duration-200 group-hover/feature:opacity-100',
           // Apply radial gradient only on hover
-          'group-hover/feature:bg-[radial-gradient(circle_at_bottom_center,_#fff1be,_#ee87cb,_#b060ff)]',
         )}
       />
       <div className="relative z-10 mb-4 px-10 text-neutral-600 dark:text-neutral-400">

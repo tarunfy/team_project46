@@ -66,11 +66,4 @@ const items = [
     header: <Skeleton />,
     icon: <TbHexagonNumber5 className="h-6 w-6 text-neutral-500" />,
   },
-  {
-    title: 'Consult with Dermatologists (Optional)',
-    description:
-      'If your skin condition is severe or requires professional attention, you can book an appointment with a dermatologist directly through the app',
-    header: <Skeleton />,
-    icon: <TbHexagonNumber6 className="h-6 w-6 text-neutral-500" />,
-  },
 ]

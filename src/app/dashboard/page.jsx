@@ -1,5 +1,6 @@
 'use client'
-import { Button } from '@/components/button'
+import { Button } from '@/components/ui/button'
+import { SidebarTrigger } from '@/components/ui/sidebar'
 import { AuthContext } from '@/context/authContext'
 
 import { useRouter } from 'next/navigation'
@@ -28,7 +29,8 @@ const Dashboard = () => {
   }, [])
   return (
     <div>
-      Vanshika This side
+      Tarun this side.
+      <SidebarTrigger />
       <Button onClick={handleLogout}>signOut</Button>
     </div>
   )
