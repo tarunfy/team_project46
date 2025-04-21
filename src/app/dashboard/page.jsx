@@ -8,6 +8,7 @@ import { useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'  // Import useRouter
 import {uploadImage, fetchDiseaseInfo} from "../../BackendConnect/imageupload"
+import DisplayInfo from "../../components/info-format/index"
 
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -19,6 +20,7 @@ const Dashboard = () => {
   const [imagePreview, setImagePreview] = useState(null); 
   const [diseaseName, setDiseaseName] = useState();
   const [severity, setSeverity] = useState()
+  const [diseaseInfo, setDiseaseInfo] = useState();
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -28,7 +30,13 @@ const Dashboard = () => {
     }
   };
   
-
+ const handleFreshStart = () => {
+  setDiseaseName(null);
+  setImage(null);
+  setImagePreview(null);
+  setSeverity(null);
+  setDiseaseInfo(null);
+ }
   const handleUpload = async () => {
     if (!image) {
       console.error('No image selected');
@@ -40,6 +48,20 @@ const Dashboard = () => {
     setDiseaseName(d1)
     setSeverity(d2)
     console.log(d1,"->", d2)
+     const formData = new FormData();
+    formData.append("file", image);
+
+    const uploadRes = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const uploadData = await uploadRes.json();
+    console.log("Uploaded to Cloudinary:", uploadData.url);
+
+    const cloudinaryImageUrl = uploadData.url;
+    console.log(cloudinaryImageUrl)
+
   };
   
   const handleDiseaseData = async () =>{
@@ -47,6 +69,7 @@ const Dashboard = () => {
       toast.error("no disease choosen")
     }
     const data = await fetchDiseaseInfo(diseaseName, severity);
+    setDiseaseInfo(data.disease_info);
     console.log(data);
   }
 
@@ -85,8 +108,10 @@ const Dashboard = () => {
         >
           Upload Image
         </Button>
-        {diseaseName && <Button onClick={handleDiseaseData }>Get Info</Button>}
-        {diseaseName && <p>{diseaseName} and the level of severity is {severity}</p>}
+        {diseaseName && !diseaseInfo &&  <Button onClick={handleDiseaseData }>Get Info</Button>}
+        {diseaseName &&  <p>{diseaseName} and the level of severity is {severity}</p>}
+        {diseaseInfo && <div className='p-4'><DisplayInfo content={diseaseInfo}/></div>}
+        {diseaseInfo && <div className='flex flex-row p-4'><Button onClick={handleFreshStart}>Try again</Button> <p>or</p> <Button>Start Tracking</Button></div>}
       </div>
     </div>
   )
